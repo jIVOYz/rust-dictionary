@@ -1,5 +1,4 @@
 use std::process;
-
 use clap::Parser;
 mod cli;
 mod config;
@@ -32,14 +31,18 @@ fn main() {
             eprintln!("{err}");
             process::exit(1);
         }),
-        Cli::List => {
+        Cli::List(args) => {
             for word in dictionary.list.iter() {
-                print!("{}. {} - ", word.index, word.word);
+                print!("{}. {} - ", &word.index, &word.word);
 
-                let m = word.meaning.join(", ");
-                print!("{} ", m);
+                let m = &word.meaning.join(", ");
+                println!("{} ", m);
 
-                println!("");
+                if word.example.is_some() && args.full {
+                    println!("Examples: ");
+                    let examples = word.example.clone().unwrap().join(", ");
+                    println!("{}", examples);
+                }
             }
         }
     }

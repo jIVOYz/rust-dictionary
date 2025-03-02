@@ -16,6 +16,13 @@ pub struct RemoveArgs {
     pub id: usize
 }
 
+#[derive(clap::Args, Debug)]
+pub struct ListArgs {
+    #[arg(long = "full", short = 'f', required = false)]
+    /// Show words with examples
+    pub full: bool,
+}
+
 #[derive(Parser, Debug)]
 pub enum Cli {
     /// Add new word
@@ -23,5 +30,5 @@ pub enum Cli {
     /// Remove word
     Remove(RemoveArgs),
     /// Print all words
-    List
+    List(ListArgs)
 }
