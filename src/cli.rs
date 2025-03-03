@@ -13,7 +13,7 @@ pub struct AddArgs {
 #[derive(clap::Args, Debug)]
 pub struct RemoveArgs {
     #[arg(required = true)]
-    pub id: usize
+    pub id: usize,
 }
 
 #[derive(clap::Args, Debug)]
@@ -21,6 +21,9 @@ pub struct ListArgs {
     #[arg(long = "full", short = 'f', required = false)]
     /// Show words with examples
     pub full: bool,
+    /// Show last N words
+    #[arg(long = "last", short = 'l', required = false)]
+    pub last: Option<usize>,
 }
 
 #[derive(Parser, Debug)]
@@ -30,5 +33,5 @@ pub enum Cli {
     /// Remove word
     Remove(RemoveArgs),
     /// Print all words
-    List(ListArgs)
+    List(ListArgs),
 }

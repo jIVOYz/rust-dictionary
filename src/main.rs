@@ -1,5 +1,5 @@
-use std::process;
 use clap::Parser;
+use std::process;
 mod cli;
 mod config;
 use cli::{AddArgs, Cli};
@@ -32,7 +32,9 @@ fn main() {
             process::exit(1);
         }),
         Cli::List(args) => {
-            for word in dictionary.list.iter() {
+            let n = args.last.unwrap_or(dictionary.list.len());
+
+            for word in dictionary.list.iter().rev().take(n).rev() {
                 print!("{}. {} - ", &word.index, &word.word);
 
                 let m = &word.meaning.join(", ");

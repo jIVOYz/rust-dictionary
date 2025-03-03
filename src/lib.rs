@@ -41,10 +41,8 @@ impl Dictionary {
         match id {
             Some(id) => {
                 self.list.remove(id);
-            },
-            None => {
-                return Err("Word not found")
             }
+            None => return Err("Word not found"),
         }
         self.update_index();
         Ok(())
