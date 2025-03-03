@@ -36,13 +36,13 @@ impl Dictionary {
         self.update_index();
     }
 
-    pub fn remove_word(self: &mut Self, index: usize) -> Result<(), &'static str> {
-        let id = self.list.iter().position(|t| t.index == index);
-        match id {
-            Some(id) => {
-                self.list.remove(id);
+    pub fn remove_word(self: &mut Self, index: &[usize]) -> Result<(), &'static str> {
+        for idx in index {
+            let id = self.list.iter().position(|t| t.index == *idx);
+
+            if let Some(i) = id {
+                self.list.remove(i);
             }
-            None => return Err("Word not found"),
         }
         self.update_index();
         Ok(())

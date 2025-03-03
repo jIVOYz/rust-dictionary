@@ -27,7 +27,7 @@ fn main() {
             });
             println!("Successfully added new word")
         }
-        Cli::Remove(args) => dictionary.remove_word(args.id).unwrap_or_else(|err| {
+        Cli::Remove(args) => dictionary.remove_word(&args.id).unwrap_or_else(|err| {
             eprintln!("{err}");
             process::exit(1);
         }),

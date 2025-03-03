@@ -13,7 +13,7 @@ pub struct AddArgs {
 #[derive(clap::Args, Debug)]
 pub struct RemoveArgs {
     #[arg(required = true)]
-    pub id: usize,
+    pub id: Vec<usize>,
 }
 
 #[derive(clap::Args, Debug)]
