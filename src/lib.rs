@@ -42,6 +42,8 @@ impl Dictionary {
 
             if let Some(i) = id {
                 self.list.remove(i);
+            } else {
+                return Err("Word with does not exist")
             }
         }
         self.update_index();
@@ -53,7 +55,7 @@ impl Dictionary {
         let mut file = fs::File::create(&data_file).unwrap();
         let json = serde_json::to_string(&self).unwrap();
 
-        let _ = file.write_all(&json.as_bytes());
+        file.write_all(&json.as_bytes()).expect("failed to save data");
     }
 }
 
