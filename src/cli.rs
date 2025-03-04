@@ -2,7 +2,7 @@ use clap::Parser;
 
 #[derive(clap::Args, Debug)]
 pub struct AddArgs {
-    #[arg(short = 'w', long, required = true)]
+    #[arg(required = true)]
     pub word: String,
     #[arg(short = 'm', long, num_args = 0..3, required = true)]
     pub meaning: Vec<String>,
