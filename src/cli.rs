@@ -3,9 +3,9 @@ use clap::Parser;
 #[derive(clap::Args, Debug)]
 pub struct AddArgs {
     #[arg(required = true)]
-    pub word: String,
-    #[arg(short = 'm', long, num_args = 0..3, required = true)]
-    pub meaning: Vec<String>,
+    pub name: String,
+    #[arg(short = 'd', long, num_args = 0..3, required = true)]
+    pub definition: Vec<String>,
     #[arg(short = 'e', long, num_args = 0..4, required = false)]
     pub example: Option<Vec<String>>,
 }
@@ -26,6 +26,12 @@ pub struct ListArgs {
     pub last: Option<usize>,
 }
 
+#[derive(clap::Args, Debug)]
+pub struct SearchArgs {
+    #[arg(required = true)]
+    pub query: String,
+}
+
 #[derive(Parser, Debug)]
 pub enum Cli {
     /// Add new word
@@ -34,4 +40,6 @@ pub enum Cli {
     Remove(RemoveArgs),
     /// Print all words
     List(ListArgs),
+    /// Search for a word
+    Search(SearchArgs),
 }

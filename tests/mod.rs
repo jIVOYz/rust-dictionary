@@ -17,7 +17,7 @@ fn dictionary_with_words() -> Dictionary {
     dictionary.add_word(word_4);
     dictionary.add_word(word_5);
 
-    return dictionary
+    return dictionary;
 }
 
 #[test]
@@ -26,4 +26,30 @@ fn remove_nonexisting_word() {
     let mut dictionary = dictionary_with_words();
 
     dictionary.remove_word(&[100]).expect("no such word");
+}
+
+#[test]
+fn search_by_name() {
+    let dictionary = dictionary_with_words();
+
+    let result = dictionary.search_word("simple");
+
+    if let Some(words) = result {
+        if words[0].name != "simple" {
+            panic!("found wrong word");
+        }
+    }
+}
+
+#[test]
+fn search_by_definition() {
+    let dictionary = dictionary_with_words();
+
+    let result = dictionary.search_word("просто");
+
+    if let Some(words) = result {
+        if words[0].definition[0] != "просто" {
+            panic!("found wrong word");
+        }
+    }
 }

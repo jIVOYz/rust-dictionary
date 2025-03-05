@@ -14,15 +14,15 @@ fn main() {
     match cli {
         Cli::Add(args) => {
             let AddArgs {
-                word,
-                meaning,
+                name: word,
+                definition,
                 example,
             } = args;
 
             dictionary.add_word(Word {
                 index: dictionary.list.len() + 1,
-                word,
-                meaning,
+                name: word,
+                definition,
                 example,
             });
             println!("Successfully added new word")
@@ -35,9 +35,9 @@ fn main() {
             let n = args.last.unwrap_or(dictionary.list.len());
 
             for word in dictionary.list.iter().rev().take(n).rev() {
-                print!("{}. {} - ", &word.index, &word.word);
+                print!("{}. {} - ", &word.index, &word.name);
 
-                let m = &word.meaning.join(", ");
+                let m = &word.definition.join(", ");
                 println!("{} ", m);
 
                 if word.example.is_some() && args.full {
@@ -45,6 +45,18 @@ fn main() {
                     let examples = word.example.clone().unwrap().join(", ");
                     println!("{}", examples);
                 }
+            }
+        }
+        Cli::Search(args) => {
+            let words = dictionary.search_word(&args.query).unwrap_or_else(|| {
+                println!("Not found");
+                process::exit(0);
+            });
+
+            for word in words.iter() {
+                print!("{}. {} - ", word.index, word.name);
+                let definitions = &word.definition.join(", ");
+                println!("{} ", definitions);
             }
         }
     }
