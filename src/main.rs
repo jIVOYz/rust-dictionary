@@ -1,9 +1,12 @@
 use clap::Parser;
-use inquire::Confirm;
+use inquire::{
+    validator::ValueRequiredValidator,
+    Confirm, Text,
+};
 use std::process;
 mod cli;
 mod config;
-use cli::{AddArgs, Cli};
+use cli::{AddArgs, Cli, EditArgs};
 use dictionary::{Dictionary, Word};
 
 fn main() {
@@ -31,8 +34,8 @@ fn main() {
                     Ok(true) => {
                         dictionary.add_word(Word {
                             index: dictionary.list.len() + 1,
-                            name,
-                            definition,
+                            name: name.trim().to_string(),
+                            definition: definition.iter().map(|d| d.trim().to_string()).collect(),
                             example,
                         });
                         println!("Successfully added new word")
@@ -57,6 +60,39 @@ fn main() {
             eprintln!("{err}");
             process::exit(1);
         }),
+        Cli::Edit(args) => {
+            let EditArgs { id } = args;
+
+            let word = dictionary.list.iter_mut().find(|word| word.index == id);
+
+            if let Some(word) = word {
+                let new_name = Text::new("Name: ")
+                    .with_initial_value(&word.name)
+                    .with_validator(ValueRequiredValidator::default())
+                    .prompt();
+
+                if let Ok(name) = new_name {
+                    word.name = name.trim().to_string();
+                }
+
+                println!("Current definitions: {}", word.definition.join(", "));
+                let new_definitions = Text::new("Definition(s): ")
+                    .with_help_message("Multiple definitions should be seperated by comma")
+                    .with_initial_value(&word.definition.join(", "))
+                    .with_validator(ValueRequiredValidator::default())
+                    .prompt();
+
+                if let Ok(definitions) = new_definitions {
+                    word.definition = definitions
+                        .split(",")
+                        .map(|s| s.trim().to_string())
+                        .collect();
+                }
+            } else {
+                eprintln!("Word not found");
+                process::exit(1);
+            }
+        }
         Cli::List(args) => {
             let n = args.last.unwrap_or(dictionary.list.len());
 

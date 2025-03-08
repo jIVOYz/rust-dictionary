@@ -17,6 +17,12 @@ pub struct RemoveArgs {
 }
 
 #[derive(clap::Args, Debug)]
+pub struct EditArgs {
+    #[arg(required = true)]
+    pub id: usize
+}
+
+#[derive(clap::Args, Debug)]
 pub struct ListArgs {
     #[arg(long = "full", short = 'f', required = false)]
     /// Show words with examples
@@ -38,6 +44,8 @@ pub enum Cli {
     Add(AddArgs),
     /// Remove word
     Remove(RemoveArgs),
+    /// Edit word
+    Edit(EditArgs),
     /// Print all words
     List(ListArgs),
     /// Search for a word
