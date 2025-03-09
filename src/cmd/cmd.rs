@@ -1,7 +1,21 @@
 use clap::Parser;
 
+#[derive(Parser, Debug)]
+pub enum Cmd {
+    /// Add new word
+    Add(Add),
+    /// Remove word
+    Remove(Remove),
+    /// Edit word
+    Edit(Edit),
+    /// Print all words
+    List(List),
+    /// Search for a word
+    Search(Search),
+}
+
 #[derive(clap::Args, Debug)]
-pub struct AddArgs {
+pub struct Add {
     #[arg(required = true)]
     pub name: String,
     #[arg(short = 'd', long, num_args = 0..3, required = true)]
@@ -11,19 +25,19 @@ pub struct AddArgs {
 }
 
 #[derive(clap::Args, Debug)]
-pub struct RemoveArgs {
+pub struct Remove {
     #[arg(required = true)]
     pub id: Vec<usize>,
 }
 
 #[derive(clap::Args, Debug)]
-pub struct EditArgs {
+pub struct Edit {
     #[arg(required = true)]
-    pub id: usize
+    pub id: usize,
 }
 
 #[derive(clap::Args, Debug)]
-pub struct ListArgs {
+pub struct List {
     #[arg(long = "full", short = 'f', required = false)]
     /// Show words with examples
     pub full: bool,
@@ -33,21 +47,7 @@ pub struct ListArgs {
 }
 
 #[derive(clap::Args, Debug)]
-pub struct SearchArgs {
+pub struct Search {
     #[arg(required = true)]
     pub query: String,
-}
-
-#[derive(Parser, Debug)]
-pub enum Cli {
-    /// Add new word
-    Add(AddArgs),
-    /// Remove word
-    Remove(RemoveArgs),
-    /// Edit word
-    Edit(EditArgs),
-    /// Print all words
-    List(ListArgs),
-    /// Search for a word
-    Search(SearchArgs),
 }
