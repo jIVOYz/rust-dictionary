@@ -1,4 +1,4 @@
-use dictionary::Dictionary;
+use di::Dictionary;
 use std::process;
 
 use crate::{

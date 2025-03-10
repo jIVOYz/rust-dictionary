@@ -1,6 +1,6 @@
 use crate::cmd::{List, Run};
 use crate::config;
-use dictionary::Dictionary;
+use di::Dictionary;
 
 impl Run for List {
     fn run(self: Self) {

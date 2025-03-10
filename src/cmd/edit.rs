@@ -2,7 +2,7 @@ use std::process;
 
 use crate::cmd::{Edit, Run};
 use crate::config;
-use dictionary::Dictionary;
+use di::Dictionary;
 use inquire::{validator::ValueRequiredValidator, Text};
 
 impl Run for Edit {

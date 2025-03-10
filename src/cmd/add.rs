@@ -4,7 +4,7 @@ use inquire::Confirm;
 
 use crate::cmd::{Add, Run};
 use crate::config;
-use dictionary::{Dictionary, Word};
+use di::{Dictionary, Word};
 
 impl Run for Add {
     fn run(self: Self) {

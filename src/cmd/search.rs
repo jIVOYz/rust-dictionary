@@ -1,7 +1,7 @@
 use std::process;
 
 use crate::{cmd::{Run, Search}, config};
-use dictionary::Dictionary;
+use di::Dictionary;
 
 impl Run for Search {
     fn run(self: Self) {

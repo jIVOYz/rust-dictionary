@@ -1,4 +1,4 @@
-use dictionary::*;
+use di::*;
 
 fn new_dictionary() -> Dictionary {
     return Dictionary::new();
