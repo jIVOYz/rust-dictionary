@@ -31,7 +31,6 @@ impl Run for Add {
                         definition: definition.iter().map(|d| d.trim().to_string()).collect(),
                         example: example.clone(),
                     });
-                    println!("Successfully added new word")
                 }
                 Ok(false) => process::exit(0),
                 Err(_) => {
@@ -46,7 +45,6 @@ impl Run for Add {
                 definition,
                 example,
             });
-            println!("Successfully added new word")
         }
         dictionary.save();
     }
