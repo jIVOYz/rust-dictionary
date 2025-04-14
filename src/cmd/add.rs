@@ -1,5 +1,4 @@
-use std::process;
-
+use anyhow::{bail, Result};
 use inquire::Confirm;
 
 use crate::cmd::{Add, Run};
@@ -7,7 +6,7 @@ use crate::config;
 use di::{Dictionary, Word};
 
 impl Run for Add {
-    fn run(self: Self) {
+    fn run(self: Self) -> Result<()> {
         let mut dictionary =
             Dictionary::load_from_file(&config::data_file()).expect("failed to load data file");
         let Add {
@@ -32,11 +31,8 @@ impl Run for Add {
                         example: example.clone(),
                     });
                 }
-                Ok(false) => process::exit(0),
-                Err(_) => {
-                    eprintln!("Invalid answer");
-                    process::exit(1);
-                }
+                Ok(false) => return Ok(()),
+                Err(_) => bail!("invalid answer"),
             }
         } else {
             dictionary.add_word(Word {
@@ -47,5 +43,6 @@ impl Run for Add {
             });
         }
         dictionary.save();
+        Ok(())
     }
 }

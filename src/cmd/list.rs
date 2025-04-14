@@ -1,10 +1,12 @@
 use crate::cmd::{List, Run};
 use crate::config;
+use anyhow::Result;
 use di::Dictionary;
 
 impl Run for List {
-    fn run(self: Self) {
-        let dictionary = Dictionary::load_from_file(&config::data_file()).expect("failed to read data file");
+    fn run(self: Self) -> Result<()> {
+        let dictionary =
+            Dictionary::load_from_file(&config::data_file()).expect("failed to read data file");
         let n = self.last.unwrap_or(dictionary.list.len());
 
         for word in dictionary.list.iter().rev().take(n).rev() {
@@ -21,5 +23,6 @@ impl Run for List {
                 println!("{}", examples);
             }
         }
+        Ok(())
     }
 }

@@ -1,4 +1,5 @@
 mod config;
+use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::{fs, io::Write, path::PathBuf};
@@ -13,7 +14,7 @@ impl Dictionary {
         Dictionary { list: vec![] }
     }
 
-    pub fn load_from_file(path: &PathBuf) -> Result<Dictionary, std::io::Error> {
+    pub fn load_from_file(path: &PathBuf) -> Result<Dictionary> {
         let contents = fs::read_to_string(path)?;
 
         match contents.is_empty() {
@@ -36,14 +37,14 @@ impl Dictionary {
         self.update_index();
     }
 
-    pub fn remove_word(self: &mut Self, index: &[usize]) -> Result<(), &'static str> {
+    pub fn remove_word(self: &mut Self, index: &[usize]) -> Result<()> {
         for idx in index {
             let id = self.list.iter().position(|t| t.index == *idx);
 
             if let Some(i) = id {
                 self.list.remove(i);
             } else {
-                return Err("Word with does not exist");
+                bail!("word does not exist");
             }
         }
         self.update_index();
@@ -83,13 +84,13 @@ impl Dictionary {
         }
     }
 
-    pub fn save(self: Self) {
+    pub fn save(self: Self) -> Result<()> {
         let data_file = config::data_file();
-        let mut file = fs::File::create(&data_file).unwrap();
-        let json = serde_json::to_string(&self).unwrap();
+        let mut file = fs::File::create(&data_file)?;
+        let json = serde_json::to_string(&self)?;
 
-        file.write_all(&json.as_bytes())
-            .expect("failed to save data");
+        file.write_all(&json.as_bytes())?;
+        Ok(())
     }
 }
 

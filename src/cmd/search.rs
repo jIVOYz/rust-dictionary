@@ -1,20 +1,23 @@
-use std::process;
-
-use crate::{cmd::{Run, Search}, config};
+use crate::{
+    cmd::{Run, Search},
+    config,
+};
+use anyhow::{bail, Result};
 use di::Dictionary;
 
 impl Run for Search {
-    fn run(self: Self) {
-        let dictionary = Dictionary::load_from_file(&config::data_file()).expect("failed to load data file");
-        let words = dictionary.search_word(&self.query).unwrap_or_else(|| {
-            println!("Not found");
-            process::exit(0);
-        });
+    fn run(self: Self) -> Result<()> {
+        let dictionary =
+            Dictionary::load_from_file(&config::data_file()).expect("failed to load data file");
+        let words = match dictionary.search_word(&self.query) {
+            Some(val) => val,
+            None => bail!("word not found"),
+        };
 
         for word in words.iter() {
-            print!("{}. {} - ", word.index, word.name);
             let definitions = &word.definition.join(", ");
-            println!("{} ", definitions);
+            println!("{}. {} - {}", word.index, word.name, definitions);
         }
+        Ok(())
     }
 }
