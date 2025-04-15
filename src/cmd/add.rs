@@ -42,7 +42,7 @@ impl Run for Add {
                 example,
             });
         }
-        dictionary.save();
+        dictionary.save()?;
         Ok(())
     }
 }

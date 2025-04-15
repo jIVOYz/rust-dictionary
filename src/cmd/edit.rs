@@ -1,13 +1,11 @@
 use crate::cmd::{Edit, Run};
-use crate::config;
 use anyhow::{bail, Result};
 use di::Dictionary;
 use inquire::{validator::ValueRequiredValidator, Text};
 
 impl Run for Edit {
     fn run(self: Self) -> Result<()> {
-        let mut dictionary =
-            Dictionary::load_from_file(&config::data_file()).expect("failed to load data file");
+        let mut dictionary = Dictionary::load()?;
         let Edit { id } = self;
 
         let word = dictionary.list.iter_mut().find(|word| word.index == id);
@@ -38,7 +36,7 @@ impl Run for Edit {
         } else {
             bail!("word not found")
         }
-        dictionary.save();
+        dictionary.save()?;
         Ok(())
     }
 }

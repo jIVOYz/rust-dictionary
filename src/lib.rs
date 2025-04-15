@@ -14,6 +14,21 @@ impl Dictionary {
         Dictionary { list: vec![] }
     }
 
+    /// Load `Dictionary` from `$XDG_DATA_HOME`.
+    /// Will return `Dictionary::new()` if `dictionary.json` is empty
+    pub fn load() -> Result<Dictionary> {
+        let contents = fs::read_to_string(config::data_file())?;
+
+        match contents.is_empty() {
+            false => return Ok(serde_json::from_str::<Dictionary>(&contents)?),
+            true => {
+                let dictionary = Self::new();
+                return Ok(dictionary);
+            }
+        }
+    }
+
+    /// Load `Dictionary` from `path`.
     pub fn load_from_file(path: &PathBuf) -> Result<Dictionary> {
         let contents = fs::read_to_string(path)?;
 
